@@ -1,7 +1,0 @@
-this is the file in firstbranch and i am making changes in this and will check if it is updating the master branch or not.
-
-
-
-
-
-This file i am editing after the merging. 
