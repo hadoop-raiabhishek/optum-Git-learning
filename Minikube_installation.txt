@@ -1,0 +1,98 @@
+﻿Minikube installation:
+
+
+C:\Users\abhis>cd ..
+
+C:\Users>cd ..
+
+C:\>mkdir kubernetes
+
+C:\>cd kubernetes
+
+
+C:\kubernetes>curl -LO https://dl.k8s.io/release/v1.20.0/bin/windows/amd64/kubectl.exe
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   161  100   161    0     0     53      0  0:00:03  0:00:03 --:--:--    51
+100 39.5M  100 39.5M    0     0  3679k      0  0:00:11  0:00:11 --:--:-- 5379k
+
+C:\kubernetes>curl -LO https://dl.k8s.io/v1.20.0/bin/windows/amd64/kubectl.exe.sha256
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   161  100   161    0     0    161      0  0:00:01 --:--:--  0:00:01   490
+100    64  100    64    0     0     64      0  0:00:01 --:--:--  0:00:01    64
+
+C:\kubernetes>minikube.exe start
+'minikube.exe' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\kubernetes>minikube.exe start
+* minikube v1.18.1 on Microsoft Windows 10 Home Single Language 10.0.19041 Build 19041
+* Automatically selected the virtualbox driver
+* Downloading VM boot image ...
+    > minikube-v1.18.0.iso.sha256: 65 B / 65 B [-------------] 100.00% ? p/s 0s
+    > minikube-v1.18.0.iso: 212.99 MiB / 212.99 MiB [] 100.00% 5.53 MiB p/s 39s
+* Starting control plane node minikube in cluster minikube
+* Downloading Kubernetes v1.20.2 preload ...
+    > preloaded-images-k8s-v9-v1....: 491.22 MiB / 491.22 MiB  100.00% 5.08 MiB
+* Creating virtualbox VM (CPUs=2, Memory=2200MB, Disk=20000MB) ...
+! This VM is having trouble accessing https://k8s.gcr.io
+* To pull new external images, you may need to configure a proxy: https://minikube.sigs.k8s.io/docs/reference/networking/proxy/
+* Preparing Kubernetes v1.20.2 on Docker 20.10.3 ...
+  - Generating certificates and keys ...
+  - Booting up control plane ...
+  - Configuring RBAC rules ...
+* Verifying Kubernetes components...
+  - Using image gcr.io/k8s-minikube/storage-provisioner:v4
+* Enabled addons: storage-provisioner, default-storageclass
+* Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+
+C:\kubernetes>minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+timeToStop: Nonexistent
+
+
+C:\kubernetes>minikube version
+minikube version: v1.18.1
+commit: 09ee84d530de4a92f00f1c5dbc34cead092b95bc
+
+C:\kubernetes>kubectl get no
+NAME       STATUS   ROLES                  AGE   VERSION
+minikube   Ready    control-plane,master   97s   v1.20.2
+
+C:\kubernetes>
+C:\kubernetes>kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.4
+deployment.apps/hello-minikube created
+
+C:\kubernetes>kubectl expose deployment hello-minikube --type=NodePort --port=8080
+service/hello-minikube exposed
+
+C:\kubernetes>kubectl get services hello-minikube
+NAME             TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+hello-minikube   NodePort   10.111.178.250   <none>        8080:30123/TCP   21s
+
+C:\kubernetes>kubectl get po
+NAME                              READY   STATUS    RESTARTS   AGE
+hello-minikube-6ddfcc9757-kttzx   1/1     Running   0          62s
+
+C:\kubernetes> minikube service hello-minikube
+|-----------|----------------|-------------|-----------------------------|
+| NAMESPACE |      NAME      | TARGET PORT |             URL             |
+|-----------|----------------|-------------|-----------------------------|
+| default   | hello-minikube |        8080 | http://192.168.99.100:30123 |
+|-----------|----------------|-------------|-----------------------------|
+* Opening service default/hello-minikube in default browser...
+
+C:\kubernetes>minikube dashboard  {This is to launch the dashboard on the web}
+* Enabling dashboard ...
+  - Using image kubernetesui/dashboard:v2.1.0
+  - Using image kubernetesui/metrics-scraper:v1.0.4
+* Verifying dashboard health ...
+* Launching proxy ...
+* Verifying proxy health ...
+* Opening http://127.0.0.1:58327/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/ in your default browser...

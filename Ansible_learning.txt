@@ -1,0 +1,194 @@
+﻿Ansible :
+-----------------------------------------------------------------
+Which can automate the multiple systems in a one go, it is for configuration management, orchestration and deployment of application. 
+
+Server system: 
+----------------
+>> yum install ansible -y
+Ansible is a push system that means all the control lies with the Ansible Master. Where you write all configuration and push when required . 
+
+>> Edit the ansible host file where we need to push configuration. Here we need to provide the Hosts/Nodes of the cluster/Machine
+vi /etc/ansible/hosts
+
+>> then we need to add a group name. Under Webserver group eg. 
+# Ex 2: A collection of hosts belonging to the 'webservers' group
+[ansible_client]
+192.168.2.11 ansible_ssh_user=root ansible_ssh_pass=xyzabcdef
+#then add the IP address of client machine. and provide a space and provide a user for client machine and ansible user password. 
+#then save the file. 
+
+>> Now to write a play book, which is write in yml. eg. "sample.yml"
+
+--- {this will tells that yml file starts from here}
+- name: sample book {we need to give name to playbook}
+   hosts: ansible_client {this is the group which we provided in ansible host file}
+   remote_user = root	{we need to provide the user name for the ssh/login to client machine}
+   become: true	{it means you are true to became root to execute the configuration or to login to client}
+   task:                       {these task are the actions which this play book will perform} 
+     - name:  install httpd               {task 1:,  always remember there we need one indent space before -name towards right}
+        yum: 	 {this will call the yum to install the package}
+              name : httpd
+	   state: latest	    {this complete from - name till state is 1 task}
+     - name: run httpd       {task 2}
+        service: 
+		name: httpd	
+		state: started
+     - name: create content      {task 3}
+       copy: 
+	    content: "congrats on installing ansible"
+	    dest: /var/www/html/index.html    {]default path where http pages were installed or saved}	 	
+
+>> Now save this file.
+>> Before running any playbook we need to check the syntax of this playbook. so command is :
+
+ansible-playbook sample.yml --syntax-check 
+
+#if the syntex is fine in you playbook, then you will get your playbook name as output else in case of error you will get that error. 
+
+eg:  ansible-playbook sample.yml --syntax-check
+playbook: sample.yml
+
+>> Now after syntax check we can push the playbook to client machine. 
+
+## ansible-playbook sample.yml  {this will start executing the playbook}
+this command will give you below information. 
+
+Play [sample book]             {this will show your play book is running}
+Task [Gathering Facts]         {this will gether information what task it need to perform}
+Task [Install httpd]               {first task as per play book it will start, if client machine don't have httpd, and ansible installed that, it will give " Changed : hostname"
+Task [Run httpd]                  {this task will run the httpd if it was not running}
+Task [create content]           {it will create a content if there was no content}
+Play recap                            {this will give you a breif summary that what all changes done, how many failures etc}
+Host: 192.168.2.11 : ok=4 changed=2 unreacheable=0 failed=0
+
+--------------------------------------------------------------------------------------
+How to work with Ansible. 
+--------------------------------------------------------------------------------------
+Ansible is a tool that provides:
+With ansible, a code is written once for the installation and deployed multiple times
+Ansible helps for the IT automcation: instructions are written to automate the IT professional's work, and configuration management, consistency of all systems
+in the infrastructure is maintened. Also with the help of Ansible, automatic deployment we can do, i.e. applications are deployed automatically on a variety of environments. 
+
+Ansible Pull configuration: 
+-----------------------------
+
+1. Pull configuration: Node check with the server periodically and fetch the configuartion from it, on hosts ansible client is installed. 
+
+Client (slave) <------> (Key Server (Playbook, configuration resides)) <--------> Client (slave)
+
+2. Push Configuration: Server pushes configuartion to the nodes. and no client (ansible) installed on the client is installed on the host servers
+
+client (slave) <-------- (Key Server (Playbook, configuration resides)) --------> Client (slave)
+
+#node check the arrow direction for the same, to understand. 
+
+So, unlike chef and puppet, ansible is push type configuration management tool. 
+
+Ansible Architecture:
+-----------------------
+			|---------------------------------Playbooks
+local Machine (module and inventory)   
+		|	|	|_ _ _ _ _ _ _ _ _ _ _ _SSH _ _ _ _ _ _ _ _ _ _ _ _ _ _ __ _ _ _ Node 1
+		|	|_ _ _ _ _  _ _ _ _ _ _ _ _ _ _ _SSH _ _ _ _ _ _ _ _ _ _ _ _ _ _ __ _ _ _ Node 2						
+		|_ _ _ _ _  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ SSH_ _ _ _ _ _ _ _ _ _ __ _ _ _ _ _ _ _ _ Node 3	
+
+
+1. Local machine is where Ansible is installed. 
+2. Nodes are the system to be configured. They are controlled by the local machine. 
+3. Module is a collection of the configuartion code files. These configuration codefiles are called playbooks  
+4. Inventory is a document that groups the nodes under specific labels. 
+
+
+Playbook: 
+-----------
+
+Core of the Ansible is it's playbook. Playbook is the one where you create a instruction/tasks to configure of done on hosts/nodes.
+Playbooks are always written in YAML (.yml) a language used to describe data. YAML is not a markup language.
+eg:
+
+---
+-name: play1
+ hosts: webserver
+ task:
+  -name: install apache
+   yum:
+	name: apache
+	state: present
+  -name: start apache
+   service:
+	name: apache
+	state: start
+
+		
+
+Inventory: 
+-----------
+An inventory file classifies nodes into groups, and we maintain the inventory of the servers which we have in the network. 
+eg:
+
+[webservers]
+web1.machine
+web2.machine
+web3.machine
+
+[DBservers]
+db1.machine
+db2.machine
+
+So when ever we are writing any script we just need to mention [webserver] or [dbserver] not the complete list of servers. 
+The hostnames of the nodes are specified under the group name. 
+
+Working of Ansible: 
+----------------------
+
+			          (Playbook and Inventory)
+				Local Machine (Ansible)
+				|                  |                 |
+_ _ _ _ _ssh _ _ _ _ _ _ _ _ _ _  |                 ssh	    |_ _ __ _ssh _ _ _ _ _ _ 	
+| 					        |					  |
+Node 1				Node 2			      Node 3
+
+
+(Ansible is installed only on the local machine. This makes Ansible agentless. The playbook and inventory are written at the local machine.
+The playbooks are sent to the nodes.  The playbook are now executed. This configures the nodes to their desired states. 
+
+Ansible Tower:  
+----------------
+Ansible tower is a framework for ansible Its a RedHat product which will provided to facilitate the Ansible in environment. 
+It provides a GUI, thus reducing the dependency on the command prompt windows. So instead of opening of command window to type lomng commands, tasks 
+can now be performed in a single click by drag and drop options. 
+
+
+Benifits of Ansible: 
+
+1. Agentless : No aditional software or plugins need to be installed on the client system. 
+   ------------
+2. Efficient: No additional software on the client system means there's more spavce for other resources. 
+   ----------
+3. Flexible: Ansible can adapt to changes in infrastructure very easily. 
+   ----------
+4. Simple: Playbooks are written in YAML which is an extremely simple language. 
+   ---------
+5. Idempotent: Execution of the same playbook, multiple times, produces the same result without any side effects. 
+   --------------
+6. Automated Reporting: Each Task in the ansible is named and a report is generated every time they are executed. 
+   -------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             

@@ -1,0 +1,286 @@
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git config -l
+diff.astextplain.textconv=astextplain
+filter.lfs.clean=git-lfs clean -- %f
+filter.lfs.smudge=git-lfs smudge -- %f
+filter.lfs.process=git-lfs filter-process
+filter.lfs.required=true
+http.sslbackend=openssl
+http.sslcainfo=D:/Program Files/Git/mingw64/ssl/certs/ca-bundle.crt
+core.autocrlf=true
+core.fscache=true
+core.symlinks=false
+core.usebuiltinfsmonitor=true
+core.editor=notepad
+pull.rebase=false
+credential.helper=manager-core
+credential.https://dev.azure.com.usehttppath=true
+init.defaultbranch=master
+abhishek.eamil=abhishek@Legion5i.com
+user.eamil=abhishekrai.rai0@gmail.com
+user.name=Abhishek
+core.repositoryformatversion=0
+core.filemode=false
+core.bare=false
+core.logallrefupdates=true
+core.symlinks=false
+core.ignorecase=true
+gui.wmstate=normal
+gui.geometry=1109x563+530+315 216 255
+(END)
+filter.lfs.required=true
+http.sslbackend=openssl
+http.sslcainfo=D:/Program Files/Git/mingw64/ssl/certs/ca-bundle.crt
+core.autocrlf=true
+core.fscache=true
+core.symlinks=false
+core.usebuiltinfsmonitor=true
+core.editor=notepad
+pull.rebase=false
+credential.helper=manager-core
+credential.https://dev.azure.com.usehttppath=true
+init.defaultbranch=master
+abhishek.eamil=abhishek@Legion5i.com
+user.eamil=abhishekrai.rai0@gmail.com
+user.name=Abhishek
+core.repositoryformatversion=0
+core.filemode=false
+core.bare=false
+core.logallrefupdates=true
+core.symlinks=false
+core.ignorecase=true
+gui.wmstate=normal
+gui.geometry=1109x563+530+315 216 255
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git --version
+git version 2.32.0.windows.2
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   File4.txt
+
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git commit -a -m file4.txt "Myfist Commit"
+fatal: paths 'Myfist Commit ...' with -a does not make sense
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git commit file4.txt "Myfist Commit"
+error: pathspec 'file4.txt' did not match any file(s) known to git
+error: pathspec 'Myfist Commit' did not match any file(s) known to git
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git commit File4.txt "Myfist Commit"
+error: pathspec 'Myfist Commit' did not match any file(s) known to git
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   File4.txt
+
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git add File4.txt
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git commit -m File4.txt "initial commmit"
+error: pathspec 'initial commmit' did not match any file(s) known to git
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git commit -m "Initial commit"
+Author identity unknown
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: unable to auto-detect email address (got 'abhishek@Legion5i.(none)')
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git config --global user.email "abhishekrai.rai0@gmail.com
+> "
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git config --global user.name "abhishekrai"
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git commit -m "initial commit"
+[master (root-commit) 6204dd4] initial commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 File4.txt
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ ls
+
+File4.txt
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ ls
+File4.txt
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ vi file3.txt
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git add file3.txt
+warning: LF will be replaced by CRLF in file3.txt.
+The file will have its original line endings in your working directory
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git commit file3.txt
+warning: LF will be replaced by CRLF in file3.txt.
+The file will have its original line endings in your working directory
+hint: Waiting for your editor to close the file... unix2dos: converting file D:/MyGitRepository/Myrepo
+dos2unix: converting file D:/MyGitRepository/Myrepository/Firstprogram/.git/COMMIT_EDITMSG to Unix for
+[master accf889] This is my second commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file3.txt
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ ls
+File4.txt  file3.txt
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git remote add origin "https://github.com/hadoop-raiabhishek/optum-Git-learning.git"
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git pull origin master
+fatal: couldn't find remote ref master
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git push -u origin master
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (6/6), 580 bytes | 23.00 KiB/s, done.
+Total 6 (delta 0), reused 0 (delta 0), pack-reused 0
+remote:
+remote: Create a pull request for 'master' on GitHub by visiting:
+remote:      https://github.com/hadoop-raiabhishek/optum-Git-learning/pull/new/master
+remote:
+To https://github.com/hadoop-raiabhishek/optum-Git-learning.git
+ * [new branch]      master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git pull origin master
+From https://github.com/hadoop-raiabhishek/optum-Git-learning
+ * branch            master     -> FETCH_HEAD
+Already up to date.
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ ls
+File4.txt  file3.txt
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git pull origin master
+From https://github.com/hadoop-raiabhishek/optum-Git-learning
+ * branch            master     -> FETCH_HEAD
+Already up to date.
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git pull
+remote: Enumerating objects: 9, done.
+remote: Counting objects: 100% (9/9), done.
+remote: Compressing objects: 100% (6/6), done.
+remote: Total 9 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (9/9), 4.83 KiB | 9.00 KiB/s, done.
+From https://github.com/hadoop-raiabhishek/optum-Git-learning
+ * [new branch]      main       -> origin/main
+Already up to date.
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git pull origin master
+From https://github.com/hadoop-raiabhishek/optum-Git-learning
+ * branch            master     -> FETCH_HEAD
+Already up to date.
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git pull origin main
+From https://github.com/hadoop-raiabhishek/optum-Git-learning
+ * branch            main       -> FETCH_HEAD
+fatal: refusing to merge unrelated histories
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git pull origin master
+From https://github.com/hadoop-raiabhishek/optum-Git-learning
+ * branch            master     -> FETCH_HEAD
+Already up to date.
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git checkout upstream/master
+error: pathspec 'upstream/master' did not match any file(s) known to git
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git checkout master
+Already on 'master'
+Your branch is up to date with 'origin/master'.
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git reset --hard upstream/master
+fatal: ambiguous argument 'upstream/master': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (master)
+$ git branch -m master main
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (main)
+$ git pull origin master
+From https://github.com/hadoop-raiabhishek/optum-Git-learning
+ * branch            master     -> FETCH_HEAD
+Already up to date.
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (main)
+$ git pull origin main
+From https://github.com/hadoop-raiabhishek/optum-Git-learning
+ * branch            main       -> FETCH_HEAD
+fatal: refusing to merge unrelated histories
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (main)
+$ git pull origin master
+remote: Enumerating objects: 7, done.
+remote: Counting objects: 100% (7/7), done.
+remote: Compressing objects: 100% (5/5), done.
+remote: Total 6 (delta 1), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (6/6), 4.24 KiB | 11.00 KiB/s, done.
+From https://github.com/hadoop-raiabhishek/optum-Git-learning
+ * branch            master     -> FETCH_HEAD
+   accf889..f0b3d37  master     -> origin/master
+Updating accf889..f0b3d37
+Fast-forward
+ MyAnsibleLearning | 178 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ README.md         |   1 +
+ 2 files changed, 179 insertions(+)
+ create mode 100644 MyAnsibleLearning
+ create mode 100644 README.md
+
+abhishek@Legion5i MINGW64 /d/MyGitRepository/Myrepository/Firstprogram (main)
+$

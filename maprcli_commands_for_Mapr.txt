@@ -1,0 +1,274 @@
+1. /opt/mapr/bin/maprcli acl set [ -cluster <cluster name> ] [ -group <group> ] [ -name <name> ] -type cluster|volume|securitypolicy [ -user <user> ]
+> /opt/mapr/bin/maprcli acl set -type volume -name egVol1 -user m7user5:dump,restore,m m7user4:fc -json
+
+2. /opt/mapr/bin/maprcli acl edit [ -cluster <cluster name> ] [ -group <group> ] [ -name <name> ] -type cluster|volume|securitypolicy [ -user <user> ]
+>/opt/mapr/bin/maprcli acl edit -type volume -name test-volume -user jsmith:dump,restore,d
+
+3. /opt/mapr/bin/maprcli acl show -type [cluster|volume|securitypolicy] [ -name name ] [ -cluster cluster name ] [ -user userName whose ACL is queried ]
+	[ -group groupName whose ACL is queried ] [ -output output format short|long|terse (default short). default: short ]
+	[ -perm list of available permissions Parameter takes no value  ]
+    >/opt/mapr/bin/maprcli acl show -type volume -name sampleVol1
+4. Start the NodeManager Service
+   /opt/mapr/bin/maprcli node services -name nodemanager -nodes abc.sj.us -action start
+. Stop the ResourceManager Service
+/opt/mapr/bin/maprcli node services -name resourcemanager -nodes abc.sj.us -action stop
+6. Stop the ResourceManager Service
+/opt/mapr/bin/maprcli node services -name resourcemanager -nodes abc.sj.us -action restart
+7. Restart NFS server
+/opt/mapr/bin/maprcli node services -nodes abc.sj.us -nfs restart
+8. Restart NFS server using a filter, Using a filter is common, especially in HBase environments, where full restarts of region and master servers are needed.
+/opt/mapr/bin/maprcli node services -filter ["csvc==nfs"] -nfs restart
+9. Start the Hue Service
+/opt/mapr/bin/maprcli node services -name hue -action start -nodes <node n>
+10. Restart the hoststats service, Restart the hoststats service after making changes to the HPE Ezmeral Data Fabric Metrics database. You do not need to restart warden.
+/opt/mapr/bin/maprcli node services -name hoststats -action restart -nodes <nodes>
+OR
+/opt/mapr/bin/maprcli node services -name hoststats -action restart -filter '[csvc==hoststats]'
+
+11. Adds one or more disks to the specified node. Permissions required: fc or a.
+maprcli disk add -disks /dev/sda1 -host 10.250.1.79
+
+12. Adds a label to disks or a storage pool. Permissions required: fc or a.
+maprcli disk setlabel -host atsqa4-161.qa.lab -disks /dev/sdd -label label1 -json
+             {
+             "timestamp":1590420155635,
+             "timeofday":"2020-05-25 08:22:35.635 GMT-0700 AM",
+             "status":"OK",
+             "total":0,
+             "data":[        ]
+             }
+
+13. Modifies the attributes of one or more disks on the specified node. Permissions required: fc or a.
+maprcli disk modify -disks /dev/sda1 -host 10.250.1.79
+
+14. Lists the disks on a node.
+maprcli disk list -host 10.10.100.22
+
+15. List all the disk in the node.
+maprcli disk listall
+
+16. Removes a disk from filesystem. Permissions required: fc or a.
+ /opt/mapr/bin/maprcli disk remove -host name/ip -disks comma-separated list of disks [ -force <true|false OR 1|0>. Need this parameter to actually remove the disk, otherwise this command behaves like a test remove. default: false ]
+    [ -cluster cluster_name ] 
+	> /opt/mapr/bin/maprcli disk remove -disks /dev/sda
+
+17. Returns detailed information about the storage pools on a cluster. If there are any active container moves, the command returns information about the source and destination storage pools.
+maprcli dump balancerinfo [-cluster <cluster name>]
+
+18.Returns a cumulative count of container moves and MB of data moved between storage pools.
+maprcli dump balancermetrics [-cluster <cluster name>]
+maprcli dump balancermetrics -cluster 10.10.82.23 -json
+maprcli dump balancermetrics -json
+{
+    "timestamp":1337770325979,
+    "status":"OK",
+    "total":1,
+    "data":[
+        {
+            "numContainersMoved":10090,
+            "numMBMoved":3147147,
+            "timeOfLastMove": "Wed May 23 03:51:44 PDT 2012"
+        }
+    ]
+}
+
+19. Lists the nodes that contain container location database (CLDB) data.
+maprcli dump cldbnodes -zkconnect centos23.lab:5181 -json
+{
+    "timestamp":1433270634424,
+    "timeofday":"2015-06-02 06:43:54.424 GMT+0000",
+    "status":"OK",
+    "total":1,
+    "data":[
+        {
+            "valid":[
+                "10.10.82.23:5660-",
+                "10.10.82.28:5660-",
+                "10.10.82.29:5660-",
+                "10.10.82.22:5660-"
+            ]
+        }
+    ]
+}
+
+20. Returns detailed information about one or more specified containers.
+maprcli dump containerinfo -ids 1 -ctime true -json
+{
+        "timestamp":1507024362685,
+        "timeofday":"2017-10-03 02:52:42.685 GMT-0700 AM",
+        "status":"OK",
+        "total":1,
+        "data":[
+                {
+                        "ContainerId":1,
+                        "Epoch":9,
+                        "Master":"10.10.105.35:5660--9-VALID",
+                        "ActiveServers":{
+                                "IP":[
+                                        "10.10.105.35:5660-192.168.122.1:5660--3-VALID, ctime: 2020-09-07 23:15:40"
+                                        "10.10.105.36:5660-192.168.122.1:5660--3-VALID, ctime: 2020-09-07 23:44:40"
+                                        "10.10.105.37:5660-192.168.122.1:5660--3-VALID, ctime: 2020-09-07 23:46:40"
+                                       
+                                ],
+                                "ExtIP":[
+                                        "10.10.104.35:5660-10.10.104.35:5692",
+                                        "10.10.104.36:5660-10.10.104.36:5692",
+                                        "10.10.104.37:5660-10.10.104.37:5692"
+                                ]
+                        },
+                        "InactiveServers":{
+
+                        },
+                        "UnusedServers":{
+
+                        },
+                        "OwnedSizeMB":"0 MB",
+                        "SharedSizeMB":"0 MB",
+                        "LogicalSizeMB":"0 MB",
+                        "TotalSizeMB":"0 MB",
+                        "NameContainer":"true",
+                        "CreatorContainerId":0,
+                        "CreatorVolumeUuid":"",
+                        "UseActualCreatorId":false,
+                        "VolumeName":"mapr.cldb.internal",
+                        "VolumeId":1,
+                        "VolumeReplication":3,
+                        "NameSpaceReplication":3,
+                        "VolumeMounted":false,
+                        "AccessTime":"September 29, 2017"
+                }
+        ]
+}
+
+21. Prints metadata from the container location database (CLDB) tables.
+maprcli dump cldbmetainfo -json
+{
+    "timestamp":1433270634424,
+    "timeofday":"2020-06-02 06:43:54.424 GMT+0000",
+    "status":"OK",
+    "total":2,
+    "data":[
+    {
+                        "name":"cntrSzTable7",
+                        "type":"FTKvstore",
+                        "parent fid":"<parentCID>.32.131332",
+                        "fid":"1.97.131462",
+                        "size":7,
+                        "nblocks":1,
+                        "lblocks":0,
+                        "compression":"off",
+                        "deleteFlags":"DeleteTypeNone",
+                        "atime":1581839467,
+                        "mtime":1581839467,
+                        "mode":"660",
+                        "uid":1000,
+                        "gid":1000,
+                        "nlink":1,
+                        "xattrInum":0,
+                        "version":3149249,
+                        "networkencryption":false,
+                        "diskflush":false,
+                        "nlevels":1
+                },
+                {
+                        "name":"containerLocationTable12",
+                        "type":"FTKvstore",
+                        "parent fid":"<parentCID>.32.131332",
+                        "fid":"1.58.131384",
+                        "size":0,
+                        "nblocks":0,
+                        "lblocks":0,
+                        "compression":"off",
+                        "deleteFlags":"DeleteTypeNone",
+                        "atime":1581839467,
+                        "mtime":1581839467,
+                        "mode":"660",
+                        "uid":1000,
+                        "gid":1000,
+                        "nlink":1,
+                        "xattrInum":0,
+                        "version":1048603,
+                        "networkencryption":false,
+                        "diskflush":false,
+                        "nlevels":0
+                }
+             ]
+        }
+
+22. Prints the state of the container location database (CLDB).
+ maprcli dump cldbstate
+mode                           ip           state                    stateDuration  desc
+SLAVE_READ_ONLY    x.x.x.x CLDB_IS_SLAVE_READ_ONLY    03:54:25      cldb running as slave
+SLAVE_READ_ONLY    x.x.x.x CLDB_IS_SLAVE_READ_ONLY    03:54:16      cldb running as slave
+MASTER_READ_WRITE  x.x.x.x CLDB_IS_MASTER_READ_WRITE  04:07:58      kvstore tables loading complete, 
+                                                                     cldb running as master
+23. Returns information about containers in a cluster.
+maprcli dump containers -type offline|resync|bm|waiting|unused
+
+24. Indicates whether rebuild is in progress for a container from CLDB.
+maprcli dump ecginfo -h dump ecginfo [ -cluster cluster_name ] -ids ids
+
+25. Returns information about which containers are under or over replicated in a specified volume.
+maprcli dump replicationmanagerinfo -volumename <volume name> [-ctime <true|false>]
+
+26. Returns information that enables you to check the status of containers in various replication manager queues like under-replicated containers, and over-replicated containers, etc.
+maprcli dump replicationmanagerqueueinfo -queue <queue> -json
+ 
+27. Returns information about the ongoing re-replication of replica containers.
+maprcli dump rereplicationinfo -json
+
+28. Displays information about containers that were copied by the replication manager.
+maprcli dump rereplicationmetrics -json
+
+29. Returns information about active replication role switches.
+maprcli dump rolebalancerinfo [ -cluster cluster_name ] [ -namecntrinfo Get NameContainers Info Parameter takes no value  ] [ -stats Gets RoleBalancer AcitveSwitches Info Parameter takes no value  ]
+        [ -volumeinfo Gets Balancing Info for Volumes(s) Parameter takes no value  ] [ -volumename Specifies the name of the volumes ]
+
+30. Returns the cumulative number of times that the replication role balancer has switched the replication role of name containers and data containers on the cluster.
+maprcli dump rolebalancermetrics -json
+
+31. Returns information about active replication role switches. Use the dump rolebalancerinfo command to see if the replication role balancer is currently switching the replication roles of any containers in a cluster.
+maprcli dump rolebalancerinfo [ -cluster cluster_name ]  [ -namecntrinfo Get NameContainers Info Parameter takes no value  ] [ -stats Gets RoleBalancer AcitveSwitches Info Parameter takes no value  ]
+        [ -volumeinfo Gets Balancing Info for Volumes(s) Parameter takes no value  ] [ -volumename Specifies the name of the volumes ]
+
+32. Collects logs and other information about the node to help troubleshoot issues
+maprcli dump supportdump [ -nodes <node names> ] [ -params <parameter string> ] [ -zkconnect <ZK connect string> ]
+
+
+33. Returns information about volumes and the associated containers. For JSON formatted output, use the -json option from the command line.
+maprcli dump volumeinfo -volumename <volume name> [-ctime <true|false>]
+
+34. Returns information about the nodes on a volume. maprcli dump volumenodes -volumename <volume name>
+ 
+35. Returns the ZooKeeper znodes.
+maprcli dump zkinfo -json
+
+36. Displays detailed information for HPE Ezmeral Data Fabric Database or file-system components that are identified by an FID.
+maprcli fid dump -fid <file identified for the element> -json
+
+37. Displays statistics for HPE Ezmeral Data Fabric Database or filesystem components that are identified by a FID.
+/opt/mapr/bin/maprcli fid stat -fid <file identifier for the element> -json
+
+38. Adds a license. Permissions required: fc or a.
+maprcli license add -cluster <cluster_name> [ -is_file true|false. default: false ] -license long_license_string
+maprcli license add -is_file true -license /tmp/license.txt
+
+39. Adds a certificate revocation list (CRL). Permissions required: fc or a.
+maprcli license addcrl -crl crl.txt -is_file true
+
+40. Displays the features authorized for the current license. Permissions required: login
+maprcli license apps [ -cluster <cluster> ]
+
+41. Lists licenses on the cluster. Permissions required: login. For best results, use the -json option when running the command.
+maprcli license list -cluster <cluster> 
+
+42. Lists certificate revocation lists (CRLs) on the cluster. Permissions required: login
+maprcli license listcrl -cluster <cluster_name> 
+
+43. Removes a license. Permissions required: fc or a.
+maprcli license remove -cluster <cluster> -license_id <license>
+
+44. Displays the cluster ID for use when creating a new license. Permissions required: login.
+ maprcli license showid -showNodes true
+
+45. 
